@@ -12,36 +12,38 @@ public class AsyncRequestsDemo {
     private static final Consumer<String> stdout = System.out::println;
 
     public static void main(String[] args) {
-        new AsyncRequestsDemo().run();
-    }
-
-    private void run() {
         try {
-            var requests = asList(
-                    Future.of(this::cacheSession),
-                    Future.of(this::persistSession)
-            );
-
-            var result = Future.firstCompletedOf(requests).get();
-
-            stdout.accept(result + " completed first");
+            new AsyncRequestsDemo().run();
+            stdout.accept("Run complete.");
         } finally {
             ForkJoinPool.commonPool().awaitQuiescence(15, TimeUnit.SECONDS);
         }
+    }
+
+    private void run() {
+        var requests = asList(
+                Future.of(this::cacheSession),
+                Future.of(this::persistSession)
+        );
+
+        var result = Future.firstCompletedOf(requests).get();
+
+        stdout.accept(result + " result ready first.");
+
     }
 
     private String cacheSession() {
         wait(1000);
         stdout.accept("Created cached result.");
 
-        return "cached";
+        return "Cached";
     }
 
     private String persistSession() {
         wait(2000);
         stdout.accept("Created persisted result.");
 
-        return "persisted";
+        return "Persisted";
     }
 
     private void wait(int duration) {
