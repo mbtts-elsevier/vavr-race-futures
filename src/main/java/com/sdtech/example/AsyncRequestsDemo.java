@@ -29,7 +29,6 @@ public class AsyncRequestsDemo {
         var result = Future.firstCompletedOf(requests).get();
 
         stdout.accept(result + " result ready first.");
-
     }
 
     private String cacheSession() {
