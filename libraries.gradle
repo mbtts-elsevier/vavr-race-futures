@@ -1,0 +1,8 @@
+ext {
+    vavrVersion = '0.10.2'
+
+    libraries = [
+            // compile
+            vavr:  "io.vavr:vavr:${vavrVersion}"
+    ]
+}
